@@ -305,7 +305,31 @@ public class Dataset {
 
         return new Dataset(games);
     }
+public void countingSortByQuality() {
+    int maxQuality = 100;
+    int[] count = new int[maxQuality + 1];
+      for (Game g : data) {
+        count[g.getQuality()]++;
+    }
+      for (int i = 1; i <= maxQuality; i++) {
+        count[i] += count[i - 1];
+    }
+    ArrayList<Game> sorted = new ArrayList<>(data.size());
+      for (int i = 0; i < data.size(); i++) {
+        sorted.add(null);
+    }
+      for (int i = data.size() - 1; i >= 0; i--) {
+        Game g = data.get(i);
+        int quality = g.getQuality();
+        int pos = count[quality] - 1;
+        sorted.set(pos, g);
+        count[quality]--;
+    }
 
+    data = sorted;
+
+    sortedByAttribute = "quality";
+}
     public static void main(String[] args) {
         ArrayList<Game> games = new ArrayList<>();
         games.add(new Game("Halo", 50000, "Shooter", 90));
